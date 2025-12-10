@@ -20,7 +20,7 @@ function Projects() {
       title: "Bike Rental",
       desc: "Feature-packed bike rental system with real-time updates and role-based access.", 
       tech: ["React", "Framer Motion", "Tailwind CSS"],
-      live: "https://www.facebook.com/sup.riyaa.392732", 
+      live: " ", 
       github: "https://github.com/narukwbs/bike-rental" 
     }
   ];

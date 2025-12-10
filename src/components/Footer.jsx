@@ -38,7 +38,7 @@ function Footer() {
 
            
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=hunterkwbs@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=chapagainnarendra15@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-purple-400 transition-colors duration-300"
