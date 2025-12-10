@@ -53,7 +53,6 @@ function About() {
               />
             </div>
           </div>
-
         
           <div className="flex-1 space-y-6">
             <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300">
