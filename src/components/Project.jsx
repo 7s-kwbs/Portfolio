@@ -4,17 +4,17 @@ function Projects() {
   const projects = [
     {
       title: "AssetTrack",
-      desc: "Enterprise-level intangible fixed asset tracking system with real-time updates and role-based access.",
+      desc: "Enterprise-level tangible fixed asset tracking system with real-time updates and role-based access.",
       tech: ["React", "Tailwind CSS", ".NET Core", "SQL Server"],
       live: "https://assettrack.narendra.com",       
-      github: "https://github.com/narukwbs/assettrack" 
+      github: "https://github.com/7s-kwbs/Asset-Track.git" 
     },
     {
       title: "Weather App",
       desc: "Beautiful real-time weather app with location detection & forecast support.",
       tech: ["React", "OpenWeather API", "Framer Motion"],
       live: "https://weather.narendra.dev",
-      github: "https://github.com/narukwbs/weather-app"
+      github: "https://github.com/7s-kwbs/weather-App.git"
     },
     {
       title: "Bike Rental",
