@@ -6,22 +6,22 @@ function Projects() {
       title: "AssetTrack",
       desc: "Enterprise-level tangible fixed asset tracking system with real-time updates and role-based access.",
       tech: ["React", "Tailwind CSS", ".NET Core", "SQL Server"],
-      live: "https://assettrack.narendra.com",       
-      github: "https://github.com/7s-kwbs/Asset-Track.git" 
+      live: "https://asset-track-hg7ueyg0z-chapagainnarendra99-3061s-projects.vercel.app/",       
+      github: "https://github.com/7s-kwbs/Asset-Track" 
     },
     {
       title: "Weather App",
       desc: "Beautiful real-time weather app with location detection & forecast support.",
       tech: ["React", "OpenWeather API", "Framer Motion"],
-      live: "https://weather.narendra.dev",
-      github: "https://github.com/7s-kwbs/weather-App.git"
+      live: "https://weather-app-six-beta-24.vercel.app/",
+      github: "https://github.com/7s-kwbs/weather-App"
     },
     {
       title: "Bike Rental",
       desc: "Feature-packed bike rental system with real-time updates and role-based access.", 
       tech: ["React", "Framer Motion", "Tailwind CSS"],
-      live: " ", 
-      github: "https://github.com/narukwbs/bike-rental" 
+      live: "https://kwbsbike-rental.vercel.app/", 
+      github: "https://github.com/7s-kwbs/Bike-Rental" 
     }
   ];
 
