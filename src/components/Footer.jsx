@@ -13,7 +13,7 @@ function Footer() {
 
           <div className="flex items-center gap-8">
             <a
-              href="https://github.com/narukwbs"
+              href="https://github.com/7s-kwbs"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-cyan-400 transition-colors duration-300"
@@ -25,7 +25,7 @@ function Footer() {
             </a>
 
             <a
-              href="https://linkedin.com/in/NaruBrother"
+              href="https://www.linkedin.com/in/narendra-chapagain-5b138b25a"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-blue-400 transition-colors duration-300"
