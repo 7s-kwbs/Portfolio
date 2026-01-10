@@ -50,9 +50,7 @@ function Footer() {
             </a>
           </div>
 
-          <p className="text-xs text-gray-600">
-            Crafted with <span className="text-red-500 animate-pulse">♥</span> using React & Tailwind
-          </p>
+    
 
         </div>
       </div>

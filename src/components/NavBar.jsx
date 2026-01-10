@@ -9,7 +9,7 @@ function NavBar() {
     { name: "Projects", link: "#projects" },
     { name: "Contact", link: "#contact" }
   ];
-
+      
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-cyan-500/10">
@@ -44,7 +44,7 @@ function NavBar() {
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden relative w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 
                 flex items-center justify-center group hover:border-cyan-500/50 transition-all duration-300"
-            >
+            > ,
               <div className="relative w-6 h-5 flex flex-col justify-between">
                 <span className={`block w-full h-0.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee] transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2.5' : ''}`}></span>
                 <span className={`block w-full h-0.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee] transition-all duration-300 ${isOpen ? 'opacity-0 translate-x-3' : ''}`}></span>

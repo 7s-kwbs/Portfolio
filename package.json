@@ -13,6 +13,7 @@
     "@ant-design/icons": "^6.1.0",
     "@tailwindcss/vite": "^4.1.17",
     "antd": "^6.0.1",
+    "aos": "^2.3.4",
     "framer-motion": "^12.23.25",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
