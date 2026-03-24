@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ function Contact() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        access_key: '7a607e7a-8f07-4c6a-b770-605201d69ae0', 
+        access_key: '7a607e7a-8f07-4c6a-b770-605201d69ae0',
         name: formData.name,
         email: formData.email,
         message: formData.message,
@@ -31,7 +32,7 @@ function Contact() {
     if (data.success) {
       Swal.fire({
         title: 'Message Sent!',
-        text: 'Thanks for reaching out! I\'ll get back to you soon.',
+        text: "Thanks for reaching out! I'll get back to you soon.",
         icon: 'success',
         background: '#111827',
         color: '#fff',
@@ -50,117 +51,158 @@ function Contact() {
     }
   };
 
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.14, delayChildren: 0.25 }
+    }
+  };
+
+  const itemFadeUp = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <section id="contact" className="min-h-screen py-20 px-6 bg-gray-950 relative overflow-hidden">
-     
-      <div className="absolute top-20 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl -z-10"></div>
+    <section id="contact" className="min-h-screen py-16 sm:py-20 bg-gray-950 relative overflow-hidden">
 
-      <div className="max-w-5xl mx-auto relative z-10">
-      
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
-            Get In <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">Touch</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+      {/* Background blobs */}
+      <motion.div
+        className="absolute top-20 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 rounded-full blur-3xl -z-10"
+        animate={{ scale: [1, 1.08, 1], x: [0, 15, 0], y: [0, -10, 0] }}
+        transition={{ duration: 12, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-10 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-purple-600/10 rounded-full blur-3xl -z-10"
+        animate={{ scale: [1, 1.1, 1], x: [0, -12, 0], y: [0, 15, 0] }}
+        transition={{ duration: 14, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 2 }}
+      />
+
+      {/* ── Same container as NavBar ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
+
+        {/* Header */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={container}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <motion.h2
+            variants={itemFadeUp}
+            transition={{ duration: 0.8 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4"
+          >
+            Get In{' '}
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+              Touch
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={itemFadeUp}
+            className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl sm:max-w-2xl mx-auto px-4"
+          >
             Have a project in mind? Looking to collaborate or just want to say hi? Feel free to drop a message.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-        
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-gray-300 font-medium mb-2">Your Name</label>
-                <input
+        {/* Grid */}
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-10 xl:gap-12 items-center">
+
+          {/* Left — Image (hidden on mobile) */}
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="hidden md:flex justify-center items-center"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1555066931-bf19f8fd1085?auto=format&fit=crop&q=80"
+              alt="Person coding on laptop - dark aesthetic"
+              className="w-full max-w-sm lg:max-w-md xl:max-w-lg rounded-2xl shadow-2xl opacity-90 object-cover"
+            />
+          </motion.div>
+
+          {/* Right — Form */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={container}
+            className="w-full"
+          >
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5 sm:space-y-6 bg-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-5 sm:p-7 lg:p-8 xl:p-10"
+            >
+              {/* Name */}
+              <motion.div variants={itemFadeUp}>
+                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                  Your Name
+                </label>
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
                   placeholder="Enter your name"
-                  className="w-full px-5 py-4 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
+                  className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
                 />
-              </div>
+              </motion.div>
 
-              <div>
-                <label className="block text-gray-300 font-medium mb-2">Email Address</label>
-                <input
+              {/* Email */}
+              <motion.div variants={itemFadeUp}>
+                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                  Email Address
+                </label>
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="Enter your Email address"
-                  className="w-full px-5 py-4 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
+                  placeholder="Enter your email address"
+                  className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
                 />
-              </div>
+              </motion.div>
 
-              <div>
-                <label className="block text-gray-300 font-medium mb-2">Message</label>
-                <textarea
+              {/* Message */}
+              <motion.div variants={itemFadeUp}>
+                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                  Message
+                </label>
+                <motion.textarea
+                  whileFocus={{ scale: 1.01 }}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
                   rows="6"
                   placeholder="Enter your message..."
-                  className="w-full px-5 py-4 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
-                ></textarea>
-              </div>
+                  className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
+                />
+              </motion.div>
 
-              <button
+              {/* Submit Button */}
+              <motion.button
+                variants={itemFadeUp}
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
                 type="submit"
-                className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-cyan-500/40 transform hover:-translate-y-1 transition-all duration-300"
+                className="w-full py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg hover:shadow-cyan-500/40 transform transition-all duration-300 mt-2"
               >
                 Send Message
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
 
-       
-          <div className="space-y-8">
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 hover:border-cyan-500/40 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-white mb-6">Let's Connect</h3>
-              <div className="space-y-5">
-                
-             
-                <a 
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=chapagainnarendra15@gmail.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center gap-4 text-gray-300 hover:text-cyan-400 transition"
-                >
-                  <div className="p-3 bg-cyan-500/10 rounded-xl">
-                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-                  </div>
-                  <span>chapagainnarendra15@gamil.com</span>
-                </a>
-               
-
-                <a href="https://github.com/7s-kwbs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-300 hover:text-cyan-400 transition">
-                  <div className="p-3 bg-cyan-500/10 rounded-xl">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-                  </div>
-                  <span>github.com/7s-kwbs</span>
-                </a>
-
-                <a href="https://www.linkedin.com/in/narendra-chapagain-5b138b25a" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-gray-300 hover:text-blue-400 transition">
-                  <div className="p-3 bg-blue-500/10 rounded-xl">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-              </svg>
-                  </div>
-                  <span>Linkedin.com/in/narendra-chapagain</span>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
