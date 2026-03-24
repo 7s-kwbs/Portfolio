@@ -131,7 +131,7 @@ function Projects() {
       tech: ["React", "Tailwind CSS", ".NET Core", "SQL Server"],
       live: "https://asset-track-hg7ueyg0z-chapagainnarendra99-3061s-projects.vercel.app/",
       github: "https://github.com/7s-kwbs/Asset-Track",
-      image: "/src/assets/p1.png",
+      image: "/p1.png",
       glowColor: "cyan",
     },
      {
@@ -140,7 +140,7 @@ function Projects() {
       tech: ["laravel", "Alpine Js", "AOS", "Tailwind CSS"],
       live: "https://qatarholidaysdmc.com/",
       github: "",
-      image: "/src/assets/Qatar.png",
+      image: "/Qatar.png",
       glowColor: "blue",
     },
     {
@@ -149,7 +149,7 @@ function Projects() {
       tech: ["React", "Framer Motion", "Tailwind CSS", "Supabase"],
       live: "https://kwbsbike-rental.vercel.app/",
       github: "https://github.com/7s-kwbs/Bike-Rental",
-      image: "/src/assets/bike.png",
+      image: "/bike.png",
       glowColor: "purple",
     },
   ];
