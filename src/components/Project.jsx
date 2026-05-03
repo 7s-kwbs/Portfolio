@@ -205,11 +205,11 @@ function Projects() {
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               My{' '}
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
                 Projects
               </span>
             </h2>
-            <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-600 mx-auto rounded-full mb-4 sm:mb-5" />
+            <div className="w-20 sm:w-24 h-1 bg-linear-to-r from-cyan-400 to-purple-600 mx-auto rounded-full mb-4 sm:mb-5" />
             <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto px-4">
               A selection of my recent work — built with modern tools, clean code, smooth animations and responsive design.
             </p>
@@ -234,16 +234,16 @@ function Projects() {
                 <GlowCard glowColor={project.glowColor} className="h-full">
 
                   {/* Image */}
-                  <div className="relative h-44 sm:h-48 lg:h-52 xl:h-56 overflow-hidden rounded-xl mx-3 mt-3 flex-shrink-0">
+                  <div className="relative h-44 sm:h-48 lg:h-52 xl:h-56 overflow-hidden rounded-xl mx-3 mt-3 shrink-0">
                     <img
                       src={project.image}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     {/* Top shine on hover */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400/80 via-blue-500/60 to-purple-600/80 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700" />
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-cyan-400/80 via-blue-500/60 to-purple-600/80 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700" />
                     {/* Bottom fade */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-gray-950/60 via-transparent to-transparent" />
                   </div>
 
                   {/* Content */}
