@@ -285,13 +285,13 @@ function About() {
                 <br />
                 <span className="text-gray-500">Tribhuvan University</span>
                 <br />
-                <motion.span
+                {/* <motion.span
                   animate={{ color: ["#22d3ee", "#06b6d4", "#22d3ee"] }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="text-cyan-400 font-semibold"
                 >
                   2021 - Present
-                </motion.span>
+                </motion.span> */}
               </motion.p>
             </motion.div>
           </motion.div>
