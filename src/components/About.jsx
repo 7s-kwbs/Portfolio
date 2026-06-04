@@ -350,7 +350,7 @@ function About() {
           className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center"
         >
           {/* Download CV */}
-          <motion.button
+          {/* <motion.button
             variants={itemFadeUp}
             whileHover={{
               scale: 1.06,
@@ -362,7 +362,7 @@ function About() {
             className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5
                        bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl
                        shadow-lg cursor-pointer group relative overflow-hidden text-sm sm:text-base"
-          >
+          > */}
             <motion.svg
               animate={{ y: [0, 4, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
