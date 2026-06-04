@@ -362,7 +362,7 @@ function About() {
             className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5
                        bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl
                        shadow-lg cursor-pointer group relative overflow-hidden text-sm sm:text-base"
-          > */}
+          >
             <motion.svg
               animate={{ y: [0, 4, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
@@ -381,7 +381,7 @@ function About() {
             <span className="group-hover:translate-x-0.5 transition-transform">
               Download CV
             </span>
-          </motion.button>
+          </motion.button> */}
 
           {/* Let's Work Together */}
           <motion.a
