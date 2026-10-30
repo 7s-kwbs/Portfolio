@@ -1,21 +1,80 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { Image, MonitorSmartphone } from "lucide-react";
+import {
+  siCss,
+  siExpress,
+  siFigma,
+  siFirebase,
+  siFlutter,
+  siGit,
+  siGithub,
+  siHtml5,
+  siJavascript,
+  siMongodb,
+  siNodedotjs,
+  siPostman,
+  siReact,
+  siTailwindcss,
+} from "simple-icons";
 import profileImg from "../assets/about.jpg";
 import cvFile from "../assets/CV.pdf";
 
-function About() {
-  const skills = [
-    "HTML",
-    "CSS / Tailwind",
-    "JavaScript",
-    "React",
-    "Flutter",
-    "Git & Github",
-    "Responsive Design",
-    "Figma",
-  ];
+const skillGroups = [
+  {
+    title: "Frontend",
+    tools: [
+      { name: "HTML5", icon: siHtml5 },
+      { name: "CSS", icon: siCss },
+      { name: "Tailwind CSS", icon: siTailwindcss },
+      { name: "JavaScript", icon: siJavascript },
+      { name: "React", icon: siReact },
+      { name: "Responsive Design", Icon: MonitorSmartphone },
+    ],
+  },
+  {
+    title: "Mobile App",
+    tools: [{ name: "Flutter", icon: siFlutter }],
+  },
+  {
+    title: "Backend",
+    tools: [
+      { name: "Node.js", icon: siNodedotjs },
+      { name: "Express", icon: siExpress },
+      { name: "MongoDB", icon: siMongodb },
+      { name: "Firebase", icon: siFirebase },
+      { name: "Postman", icon: siPostman },
+    ],
+  },
+];
 
+const otherTools = [
+  { name: "Git", icon: siGit },
+  { name: "GitHub", icon: siGithub },
+  { name: "Figma", icon: siFigma },
+  { name: "Photoshop", Icon: Image },
+];
+
+function ToolIcon({ tool }) {
+  if (tool.icon) {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-9 w-9"
+        fill={`#${tool.icon.hex}`}
+      >
+        <path d={tool.icon.path} />
+      </svg>
+    );
+  }
+
+  const Icon = tool.Icon;
+  return <Icon aria-hidden="true" className="h-9 w-9 text-cyan-300" />;
+}
+
+function About() {
   const handleDownloadCV = () => {
     const link = document.createElement("a");
     link.href = cvFile;
@@ -126,7 +185,11 @@ function About() {
             <div className="relative">
               <motion.div
                 animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur-xl opacity-30"
               />
               <motion.img
@@ -157,7 +220,11 @@ function About() {
               <div className="relative">
                 <motion.div
                   animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                   className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur-xl opacity-30"
                 />
                 <img
@@ -193,13 +260,14 @@ function About() {
                 variants={itemFadeUp}
                 className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4"
               >
-                A{" "}
-                <span className="text-cyan-400 font-semibold">
-                  BSc.CSIT graduate
-                </span>{" "}
-                who moves fast across stacks — React on the web, Flutter on
-                mobile. I don't wait to learn —{" "}
-                <span className="text-white font-medium">I build to learn.</span>
+                Software developer focused on frontend and mobile development.
+                Over the last two years, I've built end-to-end applications,
+                turning wireframes and designs into fast, reliable software
+                across web and mobile using{" "}
+                <span className="text-cyan-400 font-semibold">React</span> and {" "}
+                 <span className="text-cyan-400 font-semibold">Flutter</span> while actively
+                expanding into full-stack backend systems with Node.js and
+                MongoDB.
               </motion.p>
 
               {/* Paragraph 2 */}
@@ -207,8 +275,8 @@ function About() {
                 variants={itemFadeUp}
                 className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4"
               >
-                I've shipped real products — asset management systems, company
-                websites, and mobile apps — while still in college. My sweet
+                I've shipped real products like {" "} <span className="text-cyan-400 font-semibold">CMS & HRMS</span> system, asset management systems, company
+                websites, and mobile apps. My sweet
                 spot is turning designs into clean, functional interfaces that
                 users actually enjoy.
               </motion.p>
@@ -219,7 +287,7 @@ function About() {
                 className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4"
               >
                 I work directly from{" "}
-                <span className="text-cyan-400 font-semibold">Figma</span> — no
+                <span className="text-cyan-400 font-semibold">Figma</span>  no
                 back-and-forth, just pixel-perfect output. Whether it's a web
                 app or a mobile screen, I care about the details that make the
                 difference.
@@ -230,7 +298,7 @@ function About() {
                 variants={itemFadeUp}
                 className="text-white font-semibold text-sm sm:text-base"
               >
-                Open to frontend roles & freelance projects — if you need
+                Open to Frontend/Mobile App roles & freelance projects — if you need
                 someone hungry, adaptable, and fast,{" "}
                 <span className="text-cyan-400">let's talk.</span>
               </motion.p>
@@ -315,29 +383,55 @@ function About() {
             </span>
           </motion.h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-            {skills.map((skill, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+            {skillGroups.map((group, groupIndex) => (
               <motion.div
-                key={index}
+                key={group.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                whileHover={{
-                  scale: 1.08,
-                  y: -6,
-                  boxShadow: "0 20px 25px -5px rgba(34, 211, 238, 0.3)",
-                }}
-                className="bg-gradient-to-br from-cyan-500/10 to-purple-600/10 border border-cyan-500/20
-                           px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-center text-gray-300
-                           text-xs sm:text-sm font-medium
-                           hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20
-                           transition-all duration-300 cursor-pointer relative overflow-hidden group"
+                transition={{ duration: 0.5, delay: groupIndex * 0.08 }}
+                className="rounded-xl border border-gray-800 bg-gray-950/50 p-4 sm:p-5"
               >
-                <motion.div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
-                {skill}
+                <h4 className="mb-4 text-center text-base font-semibold text-cyan-300 sm:text-lg">
+                  {group.title}
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  {group.tools.map((tool) => (
+                    <motion.div
+                      key={tool.name}
+                      whileHover={{ y: -4, scale: 1.04 }}
+                      className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-gray-800 bg-gray-900/70 p-3 text-center transition-colors hover:border-cyan-500/50"
+                    >
+                      <ToolIcon tool={tool} />
+                      <span className="text-xs font-medium text-gray-300 sm:text-sm">
+                        {tool.name}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-6 border-t border-gray-800 pt-5">
+            <h4 className="mb-4 text-center text-base font-semibold text-cyan-300 sm:text-lg">
+              Other Tools
+            </h4>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {otherTools.map((tool) => (
+                <motion.div
+                  key={tool.name}
+                  whileHover={{ y: -4, scale: 1.04 }}
+                  className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-gray-800 bg-gray-900/70 p-3 text-center transition-colors hover:border-cyan-500/50"
+                >
+                  <ToolIcon tool={tool} />
+                  <span className="text-xs font-medium text-gray-300 sm:text-sm">
+                    {tool.name}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
