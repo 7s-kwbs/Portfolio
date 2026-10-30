@@ -8,6 +8,8 @@ import {
   siFigma,
   siFirebase,
   siFlutter,
+  siDart,
+  siGetx,
   siGit,
   siGithub,
   siHtml5,
@@ -18,7 +20,7 @@ import {
   siReact,
   siTailwindcss,
 } from "simple-icons";
-import profileImg from "../assets/about.jpg";
+import profileImg from "../assets/b.jpg";
 import cvFile from "../assets/CV.pdf";
 
 const skillGroups = [
@@ -35,7 +37,11 @@ const skillGroups = [
   },
   {
     title: "Mobile App",
-    tools: [{ name: "Flutter", icon: siFlutter }],
+    tools: [
+      { name: "Flutter", icon: siFlutter },
+      { name: "Dart", icon: siDart },
+      { name: "GetX", icon: siGetx },
+    ],
   },
   {
     title: "Backend",
@@ -178,35 +184,29 @@ function About() {
           className="flex flex-col md:flex-row items-center gap-8 lg:gap-12 xl:gap-16 mb-10 sm:mb-12"
         >
           {/* Profile Image — visible on md+ */}
-          <motion.div
-            variants={slideInLeft}
-            className="flex-1 hidden md:flex justify-center"
-          >
-            <div className="relative">
-              <motion.div
-                animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur-xl opacity-30"
-              />
-              <motion.img
-                initial={{ opacity: 0, scale: 0.92 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.1, delay: 0.4 }}
-                whileHover={{ scale: 1.08, rotate: 3 }}
-                viewport={{ once: true }}
+
+          <motion.div variants={slideInLeft} className="relative mx-auto w-full max-w-md lg:mx-0">
+            <div className="absolute -inset-3 rounded-[2rem] border border-cyan-400/10" />
+            <div className="relative overflow-hidden rounded-[1.65rem] border border-white/10 bg-slate-900">
+              <img
                 src={profileImg}
-                alt="About Narendra Chapagain"
-                className="relative w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full object-cover border-4 border-gray-800 shadow-2xl cursor-pointer"
+                alt="Narendra Chapagain"
+                width="1000"
+                height="1226"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/4.6] w-full object-cover object-[center_38%]"
               />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border border-cyan-500/20"
-              />
+              <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300">Frontend · Mobile</p>
+                  <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">Narendra Chapagain</p>
+                </div>
+                <span className="mb-1 inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-300/20 bg-slate-950/75 px-3 py-1.5 font-mono text-[10px] text-emerald-200 backdrop-blur">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Available
+                </span>
+              </div>
             </div>
           </motion.div>
 
