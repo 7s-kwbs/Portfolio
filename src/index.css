@@ -30,6 +30,16 @@ section[id] {
   scroll-margin-top: 5rem;
 }
 
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 4rem;
+  }
+
+  section[id] {
+    scroll-margin-top: 4rem;
+  }
+}
+
 .skip-link {
   position: fixed;
   z-index: 100;
