@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
 
 function Contact() {
+  const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,22 +16,25 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSending) return;
 
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: '7a607e7a-8f07-4c6a-b770-605201d69ae0',
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-      }),
-    });
+    setIsSending(true);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '7a607e7a-8f07-4c6a-b770-605201d69ae0',
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (!res.ok || !data.success) throw new Error('Message submission failed');
 
-    if (data.success) {
-      Swal.fire({
+      await Swal.fire({
         title: 'Message Sent!',
         text: "Thanks for reaching out! I'll get back to you soon.",
         icon: 'success',
@@ -39,15 +43,17 @@ function Contact() {
         confirmButtonColor: '#06b6d4',
       });
       setFormData({ name: '', email: '', message: '' });
-    } else {
+    } catch {
       Swal.fire({
-        title: 'Something went wrong',
-        text: 'Please try again later.',
+        title: 'Could not send message',
+        text: 'Please check your connection and try again.',
         icon: 'error',
         background: '#111827',
         color: '#fff',
         confirmButtonColor: '#ef4444',
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -122,6 +128,8 @@ function Contact() {
             <img
               src="https://images.unsplash.com/photo-1555066931-bf19f8fd1085?auto=format&fit=crop&q=80"
               alt="Person coding on laptop - dark aesthetic"
+              loading="lazy"
+              decoding="async"
               className="w-full max-w-sm lg:max-w-md xl:max-w-lg rounded-2xl shadow-2xl opacity-90 object-cover"
             />
           </motion.div>
@@ -136,20 +144,23 @@ function Contact() {
           >
             <form
               onSubmit={handleSubmit}
+              aria-busy={isSending}
               className="space-y-5 sm:space-y-6 bg-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-5 sm:p-7 lg:p-8 xl:p-10"
             >
               {/* Name */}
               <motion.div variants={itemFadeUp}>
-                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                <label htmlFor="contact-name" className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
                   Your Name
                 </label>
                 <motion.input
                   whileFocus={{ scale: 1.01 }}
                   type="text"
+                  id="contact-name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  disabled={isSending}
                   placeholder="Enter your name"
                   className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
                 />
@@ -157,16 +168,18 @@ function Contact() {
 
               {/* Email */}
               <motion.div variants={itemFadeUp}>
-                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                <label htmlFor="contact-email" className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
                   Email Address
                 </label>
                 <motion.input
                   whileFocus={{ scale: 1.01 }}
                   type="email"
+                  id="contact-email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  disabled={isSending}
                   placeholder="Enter your email address"
                   className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300"
                 />
@@ -174,15 +187,17 @@ function Contact() {
 
               {/* Message */}
               <motion.div variants={itemFadeUp}>
-                <label className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
+                <label htmlFor="contact-message" className="block text-gray-300 text-sm sm:text-base font-medium mb-1.5 sm:mb-2">
                   Message
                 </label>
                 <motion.textarea
                   whileFocus={{ scale: 1.01 }}
                   name="message"
+                  id="contact-message"
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={isSending}
                   rows="6"
                   placeholder="Enter your message..."
                   className="w-full px-4 sm:px-5 py-3 sm:py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/20 transition-all duration-300 resize-none"
@@ -196,9 +211,10 @@ function Contact() {
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
                 type="submit"
-                className="w-full py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg hover:shadow-cyan-500/40 transform transition-all duration-300 mt-2"
+                disabled={isSending}
+                className="w-full py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg hover:shadow-cyan-500/40 transform transition-all duration-300 mt-2 disabled:cursor-wait disabled:opacity-70"
               >
-                Send Message
+                {isSending ? 'Sending...' : 'Send Message'}
               </motion.button>
             </form>
           </motion.div>

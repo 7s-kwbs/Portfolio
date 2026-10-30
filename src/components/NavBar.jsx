@@ -2,42 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, User, Briefcase, Mail } from 'lucide-react';
 
-function NavBar() {
+function NavBar({ activeSection, onNavigate }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
-    { name: 'Home',     link: '/',     id: 'home',     icon: Home },
+    { name: 'Home',     link: '#home',     id: 'home',     icon: Home },
     { name: 'About',    link: '#about',    id: 'about',    icon: User },
     { name: 'Projects', link: '#projects', id: 'projects', icon: Briefcase },
     { name: 'Contact',  link: '#contact',  id: 'contact',  icon: Mail },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      const scrollPosition = window.scrollY + 140;
-      let current = 'home';
-      for (const item of navItems) {
-        const section = document.getElementById(item.id);
-        if (section) {
-          if (
-            scrollPosition >= section.offsetTop &&
-            scrollPosition < section.offsetTop + section.offsetHeight
-          ) {
-            current = item.id;
-            break;
-          }
-        }
-      }
-      setActiveSection(current);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const navigate = (event, id) => {
+    event.preventDefault();
+    onNavigate(id);
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const onResize = () => { if (window.innerWidth >= 768) setIsOpen(false); };
@@ -102,7 +89,7 @@ function NavBar() {
                     <motion.a
                       key={item.name}
                       href={item.link}
-                      onClick={() => setActiveSection(item.id)}
+                      onClick={(event) => navigate(event, item.id)}
                       className={`
                         relative z-10 cursor-pointer rounded-full font-semibold select-none
                         transition-colors duration-200
@@ -240,7 +227,7 @@ function NavBar() {
                     <motion.a
                       key={item.name}
                       href={item.link}
-                      onClick={() => setTimeout(() => setIsOpen(false), 120)}
+                      onClick={(event) => navigate(event, item.id)}
                       initial={{ opacity: 0, x: -16 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.07 + 0.1, duration: 0.4 }}

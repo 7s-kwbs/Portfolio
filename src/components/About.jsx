@@ -1,5 +1,4 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Image, MonitorSmartphone } from "lucide-react";
 import {
@@ -444,7 +443,7 @@ function About() {
           className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center"
         >
           {/* Download CV */}
-          {/* <motion.button
+          <motion.button
             variants={itemFadeUp}
             whileHover={{
               scale: 1.06,
@@ -475,7 +474,7 @@ function About() {
             <span className="group-hover:translate-x-0.5 transition-transform">
               Download CV
             </span>
-          </motion.button> */}
+          </motion.button>
 
           {/* Let's Work Together */}
           <motion.a
