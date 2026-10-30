@@ -215,7 +215,7 @@ function About() {
             className="flex-1 w-full space-y-5 sm:space-y-6"
           >
             {/* Mobile profile image */}
-            <div className="flex justify-center md:hidden mb-2">
+            {/* <div className="flex justify-center md:hidden mb-2">
               <div className="relative">
                 <motion.div
                   animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -232,7 +232,7 @@ function About() {
                   className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-800 shadow-2xl"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Main About Card */}
             <motion.div
