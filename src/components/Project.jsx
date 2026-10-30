@@ -1,334 +1,489 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ExternalLink,
+  Github,
+  Sparkles,
+  Smartphone,
+  Eye,
+  Images,
+} from 'lucide-react';
+import ProjectModal from './ProjectModal';
 
-// ─── GlowCard Component (Inline) ─────────────────────────────────────────────
 
-const glowColorMap = {
-  cyan:   { base: 190, spread: 200 },
-  blue:   { base: 220, spread: 200 },
-  purple: { base: 280, spread: 300 },
-  green:  { base: 120, spread: 200 },
-  red:    { base: 0,   spread: 200 },
-  orange: { base: 30,  spread: 200 },
-};
+const projects = [
 
-const beforeAfterStyles = `
-  [data-glow]::before,
-  [data-glow]::after {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    inset: calc(var(--border-size) * -1);
-    border: var(--border-size) solid transparent;
-    border-radius: calc(var(--radius) * 1px);
-    background-attachment: fixed;
-    background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
-    mask-clip: padding-box, border-box;
-    mask-composite: intersect;
-  }
-  [data-glow]::before {
-    background-image: radial-gradient(
-      calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
-      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
-      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
-    );
-    filter: brightness(2);
-  }
-  [data-glow]::after {
-    background-image: radial-gradient(
-      calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
-      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
-      hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
-    );
-  }
-  [data-glow] [data-glow] {
-    position: absolute;
-    inset: 0;
-    will-change: filter;
-    opacity: var(--outer, 1);
-    border-radius: calc(var(--radius) * 1px);
-    border-width: calc(var(--border-size) * 20);
-    filter: blur(calc(var(--border-size) * 10));
-    background: none;
-    pointer-events: none;
-    border: none;
-  }
-  [data-glow] > [data-glow]::before {
-    inset: -10px;
-    border-width: 10px;
-  }
-`;
+  {
+    title: 'Forward ',
+    category: 'Mobile Apps',
+    projectType: 'mobile',
+    badge: 'HR & Sales Management',
+    status: 'Internal Enterprise App',
+    desc: 'A complete HR and sales management app for managers, sales executives, customers, and employees, bringing sales operations and workforce management into one place.',
+    tech: ['Flutter', 'Dart', 'REST API', 'Sales Management', 'HR Management'],
+    image: '/projects/forward-app/home.png',
+    featured: true,
+    live: null,
+    github: null,
+    features: [
+      'Manage sales visits, orders, stock, collections, leads, and client relationships',
+      'Handle leave, attendance, invoicing, payments, expenses, and employee tasks',
+      'Manage products, production, customer visits, and announcements',
+      'Centralize sales data and lead sources to support organized operations and customer relationships',
+    ],
+    screenshots: [
+      {
+        title: 'Forward Home',
+        src: '/projects/forward-app/home.png',
+        desc: 'Forward, a complete HR and sales management app.',
+      },
+      {
+        title: 'Management Modules',
+        src: '/projects/forward-app/drawer.png',
+        desc: 'Access sales, customer relationship, HR, finance, production, and task management.',
+      },
+      {
+        title: 'Sign In',
+        src: '/projects/forward-app/login.png',
+        desc: 'Sign in to the Forward management app.',
+      },
+    ],
+  },
 
-const GlowCard = ({ children, className = '', glowColor = 'cyan' }) => {
-  const cardRef = useRef(null);
-  const innerRef = useRef(null);
+  // ==========================================================================
+  // 2. TASKIFY PRODUCTIVITY APP (PROJECT 2)
+  // ==========================================================================
+  {
+    title: 'Taskify',
+    category: 'Mobile Apps',
+    projectType: 'mobile',
+    badge: 'Productivity app',
+    status: 'Personal Project',
+    desc: 'Flutter productivity app for managing projects, independent tasks, labels, schedules, and progress, with Firebase authentication and offline-capable Firestore sync.',
+    tech: ['Flutter', 'Dart', 'Firebase Auth', 'Cloud Firestore', 'GetX', 'flutter_slidable', 'intl'],
+    image: '/projects/Taskify/login.png',
+    featured: true,
+    live: null,
+    github: null,
+    features: [
+      'Manage projects and independent tasks with priorities, labels, deadlines, and status tracking',
+      'Move tasks between Todo, Doing, and Done with swipe actions',
+      'Schedule tasks with calendar views and review progress in reports',
+      'Firebase authentication and offline Firestore persistence with pending-write sync',
+    ],
+    screenshots: [
+      {
+        title: 'Taskify Dashboard',
+        src: '/projects/Taskify/home.png',
+        desc: 'Project progress overview, independent task counts, and quick navigation.',
+      },
+      {
+        title: 'Calendar',
+        src: '/projects/Taskify/calendar.png',
+        desc: 'Monthly calendar for browsing scheduled independent tasks.',
+      },
+      {
+        title: 'Reports',
+        src: '/projects/Taskify/reports.png',
+        desc: 'Task totals, completion percentage, and status and priority breakdowns.',
+      },
+      {
+        title: 'Login',
+        src: '/projects/Taskify/login.png',
+        desc: 'Email and password authentication.',
+      },
+    ],
+  },
 
-  useEffect(() => {
-    const syncPointer = (e) => {
-      const { clientX: x, clientY: y } = e;
-      if (cardRef.current) {
-        cardRef.current.style.setProperty('--x', x.toFixed(2));
-        cardRef.current.style.setProperty('--xp', (x / window.innerWidth).toFixed(2));
-        cardRef.current.style.setProperty('--y', y.toFixed(2));
-        cardRef.current.style.setProperty('--yp', (y / window.innerHeight).toFixed(2));
-      }
-    };
-    document.addEventListener('pointermove', syncPointer);
-    return () => document.removeEventListener('pointermove', syncPointer);
-  }, []);
+  // --- 2. ASSETTRACK ---
+  {
+    title: 'AssetTrack',
+    category: 'React & Full-Stack',
+    projectType: 'web',
+    desc: 'Enterprise-level tangible fixed asset tracking system with real-time inventory updates, asset lifecycle management, and role-based access control.',
+    tech: ['React', 'Tailwind CSS', '.NET Core', 'SQL Server'],
+    live: 'https://asset-track-hg7ueyg0z-chapagainnarendra99-3061s-projects.vercel.app/',
+    github: 'https://github.com/7s-kwbs/Asset-Track',
+    image: '/asset_track.png',
+    featured: true,
+    screenshots: [
+      {
+        title: 'AssetTrack Web System',
+        src: '/asset_track.png',
+        desc: 'Real-time asset tracking and lifecycle dashboard.',
+      },
+    ],
+  },
 
-  const { base, spread } = glowColorMap[glowColor] || glowColorMap.cyan;
+  // --- 3. QATAR HOLIDAYS ---
+  {
+    title: 'Qatar Holidays',
+    category: 'Client & CMS',
+    projectType: 'web',
+    desc: 'Qatar Holidays DMC is an international travel platform showcasing curated tour packages and luxury experiences in Qatar, featuring fast tour filtering and responsive booking inquiry UI.',
+    tech: ['Laravel', 'Alpine Js', 'Tailwind CSS', 'Responsive UI'],
+    live: 'https://qatarholidaysdmc.com/',
+    image: '/Qatar.png',
+    featured: false,
+    screenshots: [
+      {
+        title: 'Qatar Holidays Tour Platform',
+        src: '/Qatar.png',
+        desc: 'Luxury tour packages and fast booking inquiry UI.',
+      },
+    ],
+  },
 
-  const inlineStyles = {
-    '--base': base,
-    '--spread': spread,
-    '--radius': '16',
-    '--border': '2',
-    '--backdrop': 'hsl(0 0% 8% / 0.85)',
-    '--backup-border': 'hsl(0 0% 20% / 0.5)',
-    '--size': '250',
-    '--outer': '1',
-    '--border-size': 'calc(var(--border, 2) * 1px)',
-    '--spotlight-size': 'calc(var(--size, 150) * 1px)',
-    '--hue': 'calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))',
-    backgroundImage: `radial-gradient(
-      var(--spotlight-size) var(--spotlight-size) at
-      calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
-      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.08)), transparent
-    )`,
-    backgroundColor: 'var(--backdrop, transparent)',
-    backgroundSize: 'calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))',
-    backgroundPosition: '50% 50%',
-    backgroundAttachment: 'fixed',
-    border: 'var(--border-size) solid var(--backup-border)',
-    position: 'relative',
-    touchAction: 'none',
-  };
+  // --- 4. BIKE RENTAL ---
+  {
+    title: 'Bike Rental',
+    category: 'React & Full-Stack',
+    projectType: 'web',
+    desc: 'Full-featured bike rental and fleet management platform featuring dynamic booking workflow, real-time vehicle availability, and comprehensive admin dashboard.',
+    tech: ['React', 'Framer Motion', 'Tailwind CSS', 'Supabase'],
+    live: 'https://kwbsbike-rental.vercel.app/',
+    github: 'https://github.com/7s-kwbs/Bike-Rental',
+    image: '/bike.png',
+    featured: true,
+    screenshots: [
+      {
+        title: 'Bike Rental Platform',
+        src: '/bike.png',
+        desc: 'Dynamic booking workflow and fleet availability dashboard.',
+      },
+    ],
+  },
+];
+
+const categories = ['All', 'React & Full-Stack', 'Mobile Apps', 'Client & CMS'];
+
+function ProjectCard({ project, index, total, onSelectProject }) {
+  const isMobile = project.projectType === 'mobile';
 
   return (
-    <div
-      ref={cardRef}
-      data-glow
-      style={inlineStyles}
-      className={`rounded-2xl relative shadow-[0_1rem_2rem_-1rem_black] backdrop-blur-sm overflow-hidden flex flex-col h-full ${className}`}
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{
+        layout: { type: 'spring', stiffness: 150, damping: 24, mass: 0.9 },
+        opacity: { duration: 0.28, ease: 'easeOut', delay: index * 0.035 },
+        y: { type: 'spring', stiffness: 150, damping: 24, delay: index * 0.035 },
+      }}
+      whileHover={{ y: -3, transition: { duration: 0.22, ease: 'easeOut' } }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-white/20 hover:shadow-xl hover:shadow-slate-950/40"
     >
-      <div ref={innerRef} data-glow />
-      {children}
-    </div>
-  );
-};
+      {/* IDE Window Title Bar */}
+      <div className="flex items-center justify-between border-b border-white/10 bg-slate-950/70 px-4 py-3 relative z-20">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="flex items-center gap-1.5" aria-hidden="true">
+            <span className="h-2.5 w-2.5 rounded-full bg-rose-500/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-500/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
+          </span>
+          <span className="truncate font-mono text-[11px] text-slate-400 ml-1">
+            ~/{isMobile ? 'mobile' : 'projects'}/{project.title.toLowerCase().replaceAll(' ', '-')}
+          </span>
+        </div>
 
-// ─── Projects Component ───────────────────────────────────────────────────────
+        {isMobile ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/10 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-purple-300 border border-purple-500/20">
+            <Smartphone size={10} className="text-purple-400" /> App Showcase
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-emerald-400 border border-emerald-500/20">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live
+          </span>
+        )}
+      </div>
+
+      {/* Preview Section */}
+      {isMobile ? (
+        /* Mobile Device Showcase in landscape card container */
+        <div
+          onClick={() => onSelectProject(project)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && onSelectProject(project)}
+          className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-3 cursor-pointer group/mobile select-none"
+        >
+          {/* Subtle radial glow */}
+          <div className="absolute inset-0 bg-radial from-cyan-500/10 via-transparent to-transparent pointer-events-none" />
+
+          {/* Left background screen for 3D depth */}
+          {project.screenshots && project.screenshots[1] && (
+            <div className="absolute left-6 h-[85%] aspect-[9/19] rounded-xl overflow-hidden border border-slate-700/40 opacity-30 blur-[0.6px] -rotate-6 scale-90 pointer-events-none hidden sm:block">
+              <img
+                src={project.screenshots[1].src}
+                alt=""
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+          )}
+
+          {/* Right background screen for 3D depth */}
+          {project.screenshots && project.screenshots[2] && (
+            <div className="absolute right-6 h-[85%] aspect-[9/19] rounded-xl overflow-hidden border border-slate-700/40 opacity-30 blur-[0.6px] rotate-6 scale-90 pointer-events-none hidden sm:block">
+              <img
+                src={project.screenshots[2].src}
+                alt=""
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+          )}
+
+          {/* Centered phone showcase */}
+          <div className="relative z-10 h-[92%] aspect-[9/19] rounded-2xl overflow-hidden border-2 border-slate-700/90 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-500 group-hover/mobile:scale-105 group-hover/mobile:border-cyan-400/60">
+            <img
+              src={project.image}
+              alt={`${project.title} mobile preview`}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover object-top"
+            />
+          </div>
+
+          {/* Hover CTA Overlay */}
+          <div className="absolute inset-0 bg-slate-950/65 backdrop-blur-[2px] opacity-0 group-hover/mobile:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-400/50 bg-slate-900/90 px-4 py-1.5 font-mono text-xs font-semibold text-cyan-300 shadow-xl shadow-cyan-950/60">
+              <Eye size={14} /> View Screenshots & Details
+            </span>
+          </div>
+
+          {/* Badge */}
+          <span className="absolute bottom-3 left-3 rounded-md border border-white/15 bg-slate-950/85 px-2 py-0.5 font-mono text-[9px] text-cyan-300 backdrop-blur-md flex items-center gap-1 z-20">
+            <Smartphone size={10} /> {project.screenshots?.length || 1} SCREENS
+          </span>
+        </div>
+      ) : (
+        /* Web App Landscape Preview */
+        <div
+          onClick={() => onSelectProject(project)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && onSelectProject(project)}
+          className="relative aspect-[16/10] overflow-hidden bg-slate-950 cursor-pointer group/web"
+        >
+          <img
+            src={project.image}
+            alt={`${project.title} project preview`}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-top transition-transform duration-[900ms] ease-out group-hover:scale-[1.035]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
+          <span className="absolute bottom-3 left-3 rounded-md border border-white/15 bg-slate-950/80 px-2 py-0.5 font-mono text-[9px] text-slate-300 backdrop-blur-md">
+            PREVIEW // 0{index + 1}
+          </span>
+        </div>
+      )}
+
+      {/* Card Content */}
+      <div className="relative z-20 flex flex-1 flex-col p-4 sm:p-6">
+        <div className="mb-2 flex items-start justify-between gap-3">
+          <h3
+            onClick={() => onSelectProject(project)}
+            className="cursor-pointer text-lg font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-cyan-200 sm:text-xl"
+          >
+            {project.title}
+          </h3>
+          <span className="shrink-0 font-mono text-xs text-slate-500">
+            0{index + 1} / 0{total}
+          </span>
+        </div>
+
+        <p className="mb-5 flex-grow text-xs leading-5 text-slate-300 sm:text-sm sm:leading-6">
+          {project.desc}
+        </p>
+
+        {/* Tech Stack Pills */}
+        <div className="mb-5 flex flex-wrap gap-1.5">
+          {project.tech.map((tech) => (
+            <span
+              key={tech}
+              className="rounded-md border border-white/10 bg-slate-950/60 px-2.5 py-1 font-mono text-[10px] text-cyan-200/90"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Card Footer with Actions */}
+        <div className="flex items-center justify-between border-t border-white/10 pt-4">
+          <span className="font-mono text-[10px] text-slate-500 truncate max-w-[120px]">
+            {project.tech[0]} <span aria-hidden="true">/</span> {isMobile ? 'mobile' : 'production'}
+          </span>
+
+          <div className="flex items-center gap-2.5">
+            {isMobile ? (
+              /* Mobile Showcase Button */
+              <button
+                type="button"
+                onClick={() => onSelectProject(project)}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-500/10 px-3 py-1.5 font-mono text-xs font-semibold text-cyan-300 border border-cyan-500/20 transition-all hover:bg-cyan-500 hover:text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer"
+              >
+                <Images size={13} /> View App UI
+              </button>
+            ) : (
+              /* Web App Live Button */
+              project.live && (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-500/10 px-3 py-1.5 font-mono text-xs font-semibold text-cyan-300 border border-cyan-500/20 transition-all hover:bg-cyan-500 hover:text-slate-950 hover:shadow-lg hover:shadow-cyan-500/20"
+                >
+                  Live <ExternalLink size={12} />
+                </a>
+              )
+            )}
+
+            {/* GitHub Button if link exists */}
+            {project.github ? (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.title} source code on GitHub`}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 font-mono text-xs text-slate-300 transition-colors hover:border-white/30 hover:text-white"
+              >
+                Code <Github size={12} />
+              </a>
+            ) : isMobile ? (
+              <span className="rounded border border-white/10 bg-slate-950/60 px-2 py-1 font-mono text-[10px] text-slate-400">
+                Enterprise
+              </span>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
 
 function Projects() {
-  const projects = [
-    {
-      title: "AssetTrack",
-      desc: "Enterprise-level tangible fixed asset tracking system with real-time updates and role-based access control.",
-      tech: ["React", "Tailwind CSS", ".NET Core", "SQL Server"],
-      live: "https://asset-track-hg7ueyg0z-chapagainnarendra99-3061s-projects.vercel.app/",
-      github: "https://github.com/7s-kwbs/Asset-Track",
-      image: "/p1.png",
-      glowColor: "cyan",
-    },
-     {
-      title: "Qatar Holidays",
-      desc: "Qatar Holidays DMC is a travel website that showcases curated tour packages and luxury experiences in Qatar, featuring an intuitive UI for browsing, filtering, and exploring tours with a responsive and user-friendly design.",
-      tech: ["laravel", "Alpine Js", "AOS", "Tailwind CSS"],
-      live: "https://qatarholidaysdmc.com/",
-      github: "",
-      image: "/Qatar.png",
-      glowColor: "blue",
-    },
-    {
-      title: "Bike Rental",
-      desc: "Full-featured bike rental platform with booking system, real-time availability and admin dashboard.",
-      tech: ["React", "Framer Motion", "Tailwind CSS", "Supabase"],
-      live: "https://kwbsbike-rental.vercel.app/",
-      github: "https://github.com/7s-kwbs/Bike-Rental",
-      image: "/bike.png",
-      glowColor: "purple",
-    },
-  ];
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  const container = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.14, delayChildren: 0.4 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 60, scale: 0.92 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  };
+  const filteredProjects = activeCategory === 'All'
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: beforeAfterStyles }} />
+    <section id="projects" className="relative overflow-hidden bg-gray-950 py-20 sm:py-24">
+      {/* Background ambient lighting */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute top-20 left-10 h-80 w-80 rounded-full bg-cyan-600/10 blur-[120px] sm:h-96 sm:w-96" />
+        <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-purple-600/10 blur-[130px] sm:h-[450px] sm:w-[450px]" />
+      </div>
 
-      <section id="projects" className="py-16 sm:py-20 bg-gray-950 relative overflow-hidden">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+        {/* Section Header */}
+        <motion.header
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12 text-center sm:mb-16"
+        >
+          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+            Selected Work
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Featured{' '}
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+              Projects
+            </span>
+          </h2>
+          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600" />
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-slate-400 sm:text-base">
+            Real-world web and mobile applications engineered for real users — featuring clean architecture, production-ready code, and thoughtful UX.
+          </p>
+        </motion.header>
 
-        {/* Background orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-20 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-600/10 rounded-full blur-3xl"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.12, 0.28, 0.12] }}
-            transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-            className="absolute bottom-10 right-10 w-80 sm:w-[500px] h-80 sm:h-[500px] bg-purple-600/10 rounded-full blur-3xl"
-          />
-        </div>
+        {/* Category Filter Tabs */}
+        <div className="mb-10 -mx-4 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0">
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat;
+            const count = cat === 'All'
+              ? projects.length
+              : projects.filter((p) => p.category === cat).length;
 
-        {/* ── Same container as NavBar ── */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
-
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9 }}
-            className="text-center mb-12 sm:mb-16 lg:mb-20"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              My{' '}
-              <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                Projects
-              </span>
-            </h2>
-            <div className="w-20 sm:w-24 h-1 bg-linear-to-r from-cyan-400 to-purple-600 mx-auto rounded-full mb-4 sm:mb-5" />
-            <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto px-4">
-              A selection of my recent work — built with modern tools, clean code, smooth animations and responsive design.
-            </p>
-          </motion.div>
-
-          {/* Projects Grid */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7 xl:gap-8"
-          >
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                whileHover={{ y: -10, scale: 1.02, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                whileTap={{ scale: 0.97 }}
-                className="group h-full"
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                aria-pressed={isActive}
+                className={`relative shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-mono text-xs sm:text-sm font-medium transition-all duration-200 ${
+                  isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
               >
-                <GlowCard glowColor={project.glowColor} className="h-full">
-
-                  {/* Image */}
-                  <div className="relative h-44 sm:h-48 lg:h-52 xl:h-56 overflow-hidden rounded-xl mx-3 mt-3 shrink-0">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {/* Top shine on hover */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-cyan-400/80 via-blue-500/60 to-purple-600/80 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700" />
-                    {/* Bottom fade */}
-                    <div className="absolute inset-0 bg-linear-to-t from-gray-950/60 via-transparent to-transparent" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4 sm:p-5 lg:p-6 flex flex-col flex-grow">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4 flex-grow">
-                      {project.desc}
-                    </p>
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-5">
-                      {project.tech.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-medium bg-cyan-950/40 text-cyan-300 rounded-lg border border-cyan-800/50 hover:bg-cyan-900/50 hover:border-cyan-400/60 transition-all"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="flex items-center gap-4 sm:gap-5 mt-auto">
-                      {project.live && (
-                        <motion.a
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.08, x: 4 }}
-                          whileTap={{ scale: 0.94 }}
-                          className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-medium text-xs sm:text-sm transition-colors"
-                        >
-                          <span className="text-sm sm:text-base">↗</span> Live Demo
-                        </motion.a>
-                      )}
-
-                      <motion.a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.15, rotate: 8 }}
-                        whileTap={{ scale: 0.92 }}
-                        className="text-gray-400 hover:text-white transition-colors ml-auto"
-                      >
-                        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.8 24 17.303 24 12c0-6.627-5.373-12-12-12z" />
-                        </svg>
-                      </motion.a>
-                    </div>
-                  </div>
-
-                </GlowCard>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Bottom CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="mt-14 sm:mt-16 lg:mt-20 text-center"
-          >
-            <motion.a
-              href="https://github.com/7s-kwbs"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.07, y: -5, boxShadow: '0 25px 50px -12px rgba(6, 182, 212, 0.4)' }}
-              whileTap={{ scale: 0.96 }}
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold text-sm sm:text-base rounded-xl shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300"
-            >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.8 24 17.303 24 12c0-6.627-5.373-12-12-12z" />
-              </svg>
-              View More Projects on GitHub
-            </motion.a>
-          </motion.div>
-
+                {isActive && (
+                  <motion.span
+                    layoutId="project-tab-bg"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.2)] -z-10"
+                    transition={{ type: 'spring', stiffness: 240, damping: 28 }}
+                  />
+                )}
+                {cat} ({count})
+              </button>
+            );
+          })}
         </div>
-      </section>
-    </>
+
+        {/* Project Grid */}
+        <p className="sr-only" role="status" aria-live="polite">
+          Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
+          {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}.
+        </p>
+        <motion.div
+          layout
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                index={index}
+                total={filteredProjects.length}
+                onSelectProject={setSelectedProject}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* GitHub Call to Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mt-14 text-center sm:mt-16"
+        >
+          <a
+            href="https://github.com/7s-kwbs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-950/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/25 sm:px-8 sm:py-4 sm:text-base"
+          >
+            <Github size={18} />
+            <span>Explore More on GitHub</span>
+            <span aria-hidden="true">&#8599;</span>
+          </a>
+        </motion.div>
+      </div>
+
+      {/* Interactive Case Study & Screenshot Modal */}
+      <ProjectModal
+        key={selectedProject?.title}
+        project={selectedProject}
+        isOpen={Boolean(selectedProject)}
+        onClose={() => setSelectedProject(null)}
+      />
+    </section>
   );
 }
 
