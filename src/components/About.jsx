@@ -18,6 +18,7 @@ import {
   siPostman,
   siReact,
   siTailwindcss,
+  siGitlab,
 } from "simple-icons";
 import profileImg from "../assets/b.jpg";
 import cvFile from "../assets/CV.pdf";
@@ -57,6 +58,7 @@ const skillGroups = [
 const otherTools = [
   { name: "Git", icon: siGit },
   { name: "GitHub", icon: siGithub },
+  {name: "GitLab", icon: siGitlab},
   { name: "Figma", icon: siFigma },
   { name: "Photoshop", Icon: Image },
 ];
@@ -140,7 +142,7 @@ function About() {
     >
       {/* Animated background blobs */}
       <motion.div
-        animate={{ y: [0, 30, 0], opacity: [0.3, 0.5, 0.3] }}
+        animate={{ y: [0, 30, 0], opacity: [0.3, 0.8, 0.3] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"
       />
@@ -164,13 +166,13 @@ function About() {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4"
           >
             About{" "}
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-cyan-400 bg-clip-text text-transparent">
               Me
             </span>
           </motion.h2>
           <motion.div
             variants={scaleIn}
-            className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-600 mx-auto rounded-full"
+            className="w-20 sm:w-24 h-1 bg-cyan-400  mx-auto rounded-full"
           />
         </motion.div>
 
@@ -299,7 +301,7 @@ function About() {
               >
                 Open to Frontend/Mobile App roles & freelance projects — if you need
                 someone hungry, adaptable, and fast,{" "}
-                <span className="text-cyan-400">let's talk.</span>
+                <a href="#contact" className="text-cyan-400" >let's talk.</a>
               </motion.p>
             </motion.div>
 
@@ -377,7 +379,7 @@ function About() {
             className="text-xl sm:text-2xl font-bold text-white mb-5 sm:mb-6 text-center"
           >
             Skills &{" "}
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-cyan-400 bg-clip-text text-transparent">
               Technologies
             </span>
           </motion.h3>
@@ -417,7 +419,7 @@ function About() {
             <h4 className="mb-4 text-center text-base font-semibold text-cyan-300 sm:text-lg">
               Other Tools
             </h4>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
               {otherTools.map((tool) => (
                 <motion.div
                   key={tool.name}
@@ -443,7 +445,7 @@ function About() {
           className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center"
         >
           {/* Download CV */}
-          <motion.button
+          {/* <motion.button
             variants={itemFadeUp}
             whileHover={{
               scale: 1.06,
@@ -474,7 +476,7 @@ function About() {
             <span className="group-hover:translate-x-0.5 transition-transform">
               Download CV
             </span>
-          </motion.button>
+          </motion.button> */}
 
           {/* Let's Work Together */}
           <motion.a
